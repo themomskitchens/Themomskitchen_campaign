@@ -8,7 +8,7 @@
 
 body{
 font-family:Arial, sans-serif;
-margin:0;
+margin:-0;
 background:#FECD50;
 padding:20px;
 }
@@ -16,24 +16,25 @@ padding:20px;
 .container{
 max-width:500px;
 margin:auto;
-background:#fff;
-padding:25px;
-border-radius:15px;
-box-shadow:0 10px 25px rgba(0,0,0,.2);
+background:#ffffff;
+padding:30px;
+border-radius:18px;
+box-shadow:0 15px 35px rgba(0,0,0,.2);
 }
 
 h2{
 text-align:center;
-margin-top:0;
+margin-bottom:0px;
 }
 
 input,button{
 width:100%;
-padding:12px;
-margin:10px 0;
-border-radius:8px;
+padding:14px;
+margin:12px 0;
+border-radius:10px;
 border:1px solid #ccc;
-font-size:15px;
+font-size:16px;
+box-sizing:border-box;
 }
 
 button{
@@ -41,63 +42,85 @@ background:#FECD50;
 border:none;
 font-weight:bold;
 cursor:pointer;
-font-size:16px;
+font-size:17px;
+transition:.2s;
 }
 
-button:hover{opacity:0.9;}
+button:hover{
+transform:scale(1.03);
+}
 
 .hidden{display:none;}
 
+
+/* TERMS SECTION */
+
 .terms-box{
 margin-top:15px;
-padding:10px;
+padding:20px;
 background:#fff8d6;
-border-left:6px solid #FECD50;
-border-radius:10px;
-font-size:15px;
-line-height:1.6;
+border-left:8px solid #FECD50;
+border-radius:12px;
+font-size:17px;          /* Bigger font */
+line-height:1.5;         /* Proper spacing */
 }
 
 .terms-box ul{
-padding-left:20px;
+padding-left:22px;
 margin:0;
 }
 
 .terms-box li{
-margin-bottom:15px;
+margin-bottom:18px;      /* Proper row gap */
 }
 
 .highlight{
-color:#FF0000;
+color:#d40000;
 font-weight:bold;
 }
 
 .footer-note{
-margin-top:15px;
-font-size:13px;
+margin-top:25px;
+font-size:14px;
 text-align:center;
-color:#11;
 font-weight:bold;
 }
 
 .checkbox-row{
-margin-top:20px;
+margin-top:25px;
 display:flex;
 align-items:center;
 gap:10px;
-font-size:15px;
+font-size:16px;
+}
+
+.checkbox-row input{
+width:18px;
+height:18px;
+}
+
+hr{
+margin:25px 0;
 }
 
 #winner{
-margin-top:15px;
+margin-top:20px;
 font-weight:bold;
-padding:12px;
+padding:15px;
 background:#f4f4f4;
-border-radius:8px;
-font-size:15px;
+border-radius:10px;
+font-size:16px;
 }
-</style>
 
+.success-box{
+text-align:center;
+padding:20px;
+font-size:18px;
+font-weight:bold;
+color:green;
+}
+
+</style>
 </head>
 
 <body>
@@ -107,10 +130,9 @@ font-size:15px;
 <!-- TERMS PAGE -->
 <div id="termsPage">
 
-<h2>📜 Campaign T & C</h2>
+<h2>📜 Campaign Terms & Conditions</h2>
 
 <div class="terms-box">
-
 <ul>
 <li>Each <span class="highlight">verified registration</span> gets <b>1 Entry</b>.</li>
 
@@ -128,10 +150,9 @@ font-size:15px;
 </ul>
 
 <div class="footer-note">
-
 Powered by KAVISH INFORMATICS
-
 </div>
+
 </div>
 
 <div class="checkbox-row">
@@ -140,11 +161,13 @@ Powered by KAVISH INFORMATICS
 </div>
 
 <button onclick="proceedToRegister()">Continue</button>
+
 </div>
 
-<!-- CUSTOMER REGISTRATION -->
+
+<!-- CUSTOMER PAGE -->
 <div id="customerPage" class="hidden">
-<h2>🏆 Register Now</h2>
+<h2>🏆 Customer Registration</h2>
 
 <input type="text" id="name" placeholder="Full Name">
 <input type="text" id="mobile" placeholder="Mobile Number">
@@ -154,12 +177,15 @@ Powered by KAVISH INFORMATICS
 <button onclick="register()">Submit Registration</button>
 </div>
 
+
 <!-- ADMIN LOGIN -->
 <div id="adminLoginPage" class="hidden">
 <h2>🔐 Admin Login</h2>
+
 <input type="password" id="adminPass" placeholder="Enter Password">
 <button onclick="login()">Login</button>
 </div>
+
 
 <!-- ADMIN DASHBOARD -->
 <div id="adminDashboard" class="hidden">
@@ -173,19 +199,23 @@ Powered by KAVISH INFORMATICS
 
 <button onclick="pickWinner()">Pick Winner</button>
 <div id="winner"></div>
+
 </div>
 
 </div>
 
 <script>
 
-const API_URL="https://script.google.com/macros/s/AKfycbyLlT57YO3kWZkm9cYGxoHPui1BNvn5XOcN6ee1n7TWpGCbtALVf4JY8_Onjudhjao/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbxpWuusK4B4vudtShroP9rRBn0TiunbXQhwGd1GvJc/dev";
 
+/* ADMIN ACCESS ONLY THROUGH ?admin=1 */
 if(window.location.search.includes("admin=1")){
 document.getElementById("termsPage").classList.add("hidden");
+document.getElementById("customerPage").classList.add("hidden");
 document.getElementById("adminLoginPage").classList.remove("hidden");
 }
 
+/* TERMS ACCEPT */
 function proceedToRegister(){
 if(!document.getElementById("agreeCheck").checked){
 alert("Please accept terms to continue");
@@ -195,6 +225,7 @@ document.getElementById("termsPage").classList.add("hidden");
 document.getElementById("customerPage").classList.remove("hidden");
 }
 
+/* CUSTOMER REGISTER */
 function register(){
 
 let name=document.getElementById("name").value.trim();
@@ -220,13 +251,15 @@ officeAddress:address
 })
 .then(res=>res.text())
 .then(()=>{
-alert("Registration Successful");
-document.getElementById("customerPage").innerHTML="<h2>✅ Thank You for Registering!</h2>";
+document.getElementById("customerPage").innerHTML=
+"<div class='success-box'>✅ Registration Successful!<br>Best of Luck 🎉</div>";
 })
 .catch(()=>alert("Network Error"));
 }
 
+/* ADMIN LOGIN */
 function login(){
+
 fetch(API_URL,{
 method:"POST",
 headers:{"Content-Type":"application/json"},
@@ -246,7 +279,9 @@ alert("Wrong Password");
 });
 }
 
+/* UPDATE ORDER */
 function addOrder(){
+
 let mobile=document.getElementById("orderMobile").value.trim();
 let amount=document.getElementById("orderAmount").value;
 
@@ -268,7 +303,9 @@ amount:Number(amount)
 .then(data=>alert(data));
 }
 
+/* PICK WINNER */
 function pickWinner(){
+
 fetch(API_URL,{
 method:"POST",
 headers:{"Content-Type":"application/json"},
@@ -294,6 +331,7 @@ document.getElementById("winner").innerHTML=
 "🏆 Winner: "+win[1]+
 "<br>Mobile: "+win[2]+
 "<br>Total Entries: "+win[7];
+
 });
 }
 
