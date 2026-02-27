@@ -172,20 +172,33 @@ document.getElementById("adminLogin").classList.remove("hidden");
 }
 
 function register(){
+
+if(!name.value || !mobile.value){
+alert("Please fill required fields");
+return;
+}
+
 fetch(API_URL,{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
 action:"register",
-name:document.getElementById("name").value,
-mobile:document.getElementById("mobile").value,
-officeName:document.getElementById("officeName").value,
-officeAddress:document.getElementById("officeAddress").value
+name:name.value,
+mobile:mobile.value,
+officeName:officeName.value,
+officeAddress:officeAddress.value
 })
 })
 .then(res=>res.text())
-.then(data=>alert(data))
-.catch(err=>alert("Error: "+err));
+.then(data=>{
+console.log(data);
+alert(data);
+})
+.catch(err=>{
+console.log(err);
+alert("Network Error");
+});
+
 }
 
 function login(){
