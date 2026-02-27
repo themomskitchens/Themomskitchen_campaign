@@ -268,16 +268,14 @@ action:"adminLogin",
 password:document.getElementById("adminPass").value
 })
 })
-.then(res=>res.text())
-.then(data=>{
-if(data==="Success"){
-document.getElementById("adminLoginPage").classList.add("hidden");
-document.getElementById("adminDashboard").classList.remove("hidden");
-}else{
-alert("Wrong Password");
-}
-});
-}
+.then(res => res.json())
+.then(data => {
+   if(data.status === "success"){
+      // show dashboard
+   } else {
+      alert(data.message);
+   }
+})
 
 /* UPDATE ORDER */
 function addOrder(){
