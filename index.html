@@ -1,169 +1,126 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Food Corner Corporate Lucky Draw</title>
+<title>Food Corner Campaign</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { font-family: Arial; background:#f4f4f4; padding:20px; }
-.container { max-width:500px; margin:auto; background:white; padding:20px; border-radius:10px; box-shadow:0 0 10px #ccc; }
-h2 { text-align:center; }
-input, select, button { width:100%; padding:10px; margin:8px 0; }
-button { background:#ff6600; color:white; border:none; cursor:pointer; }
-button:hover { background:#e65c00; }
-.hidden { display:none; }
+body{font-family:Arial;background:#f4f4f4;padding:20px;}
+.container{max-width:500px;margin:auto;background:white;padding:20px;border-radius:10px;}
+input,select,button{width:100%;padding:10px;margin:8px 0;}
+button{background:#ff6600;color:white;border:none;}
+.hidden{display:none;}
 </style>
 </head>
 <body>
 
 <div class="container">
 
-<!-- CUSTOMER SECTION -->
 <div id="customerSection">
-<h2>🏆 Food Corner Lucky Draw</h2>
-<h3>Register Here</h3>
-
+<h2>🏆 Lucky Draw Registration</h2>
 <input type="text" id="name" placeholder="Full Name">
 <input type="text" id="mobile" placeholder="Mobile Number">
-<input type="text" id="office" placeholder="Office / Building">
+<input type="text" id="office" placeholder="Office">
 <select id="preference">
-<option value="">Veg / Non-Veg</option>
+<option value="">Veg/Non-Veg</option>
 <option>Veg</option>
 <option>Non-Veg</option>
 </select>
-
 <button onclick="register()">Register</button>
 </div>
 
+<div id="adminLogin" class="hidden">
+<h2>Admin Login</h2>
+<input type="password" id="adminPass" placeholder="Password">
+<button onclick="login()">Login</button>
+</div>
 
-<!-- ADMIN SECTION -->
-<div id="adminSection" class="hidden">
-<h2>🔐 Admin Panel</h2>
-
-<h3>Add Order</h3>
+<div id="adminPanel" class="hidden">
+<h2>Admin Panel</h2>
 <input type="text" id="orderMobile" placeholder="Customer Mobile">
 <input type="number" id="orderAmount" placeholder="Order Amount">
 <button onclick="addOrder()">Add Order</button>
 
 <hr>
-
-<h3>Pick Winner</h3>
-<button onclick="pickWinner()">Generate Winner</button>
-<p id="winnerResult"></p>
+<button onclick="pickWinner()">Pick Winner</button>
+<p id="winner"></p>
 </div>
 
 </div>
 
 <script>
+const API_URL = "YOUR_WEB_APP_URL";
 
-// Detect Admin Mode
 if (window.location.search.includes("admin=1")) {
-document.getElementById("customerSection").style.display = "none";
-document.getElementById("adminSection").classList.remove("hidden");
+document.getElementById("customerSection").style.display="none";
+document.getElementById("adminLogin").classList.remove("hidden");
 }
 
-// Data Functions
-function getData() {
-return JSON.parse(localStorage.getItem("customers")) || [];
+function register(){
+fetch(API_URL,{
+method:"POST",
+body:JSON.stringify({
+action:"register",
+name:document.getElementById("name").value,
+mobile:document.getElementById("mobile").value,
+office:document.getElementById("office").value,
+preference:document.getElementById("preference").value
+})
+})
+.then(res=>res.text())
+.then(data=>alert(data));
 }
 
-function saveData(data) {
-localStorage.setItem("customers", JSON.stringify(data));
-}
-
-// Register Customer
-function register() {
-let name = document.getElementById("name").value;
-let mobile = document.getElementById("mobile").value;
-let office = document.getElementById("office").value;
-let preference = document.getElementById("preference").value;
-
-if (!name || !mobile || !office || !preference) {
-alert("Please fill all fields");
-return;
-}
-
-let data = getData();
-
-if (data.find(c => c.mobile === mobile)) {
-alert("Already Registered");
-return;
-}
-
-data.push({
-name,
-mobile,
-office,
-preference,
-totalAmount: 0,
-orders: 0,
-entries: 1
-});
-
-saveData(data);
-alert("Registration Successful! You got 1 Entry 🎉");
-
-document.getElementById("name").value="";
-document.getElementById("mobile").value="";
-document.getElementById("office").value="";
-document.getElementById("preference").value="";
-}
-
-// Add Order
-function addOrder() {
-let mobile = document.getElementById("orderMobile").value;
-let amount = parseInt(document.getElementById("orderAmount").value);
-
-let data = getData();
-let customer = data.find(c => c.mobile === mobile);
-
-if (!customer) {
-alert("Customer Not Found");
-return;
-}
-
-customer.totalAmount += amount;
-customer.orders += 1;
-
-let newEntries = Math.floor(amount / 100);
-customer.entries += newEntries;
-
-if (customer.orders === 5) {
-customer.entries += 5; // Bonus
-}
-
-saveData(data);
-alert("Order Added! Entries Updated 🎟");
-
-document.getElementById("orderMobile").value="";
-document.getElementById("orderAmount").value="";
-}
-
-// Pick Winner
-function pickWinner() {
-let data = getData();
-let pool = [];
-
-data.forEach(customer => {
-for (let i = 0; i < customer.entries; i++) {
-pool.push(customer);
+function login(){
+fetch(API_URL,{
+method:"POST",
+body:JSON.stringify({
+action:"adminLogin",
+password:document.getElementById("adminPass").value
+})
+})
+.then(res=>res.text())
+.then(data=>{
+if(data==="Success"){
+document.getElementById("adminLogin").style.display="none";
+document.getElementById("adminPanel").classList.remove("hidden");
+}else{
+alert("Wrong Password");
 }
 });
-
-if (pool.length === 0) {
-alert("No Entries Found");
-return;
 }
 
-let randomIndex = Math.floor(Math.random() * pool.length);
-let winner = pool[randomIndex];
-
-document.getElementById("winnerResult").innerHTML =
-"🏆 Winner: " + winner.name +
-"<br>Office: " + winner.office +
-"<br>Total Entries: " + winner.entries;
+function addOrder(){
+fetch(API_URL,{
+method:"POST",
+body:JSON.stringify({
+action:"addOrder",
+mobile:document.getElementById("orderMobile").value,
+amount:parseInt(document.getElementById("orderAmount").value)
+})
+})
+.then(res=>res.text())
+.then(data=>alert(data));
 }
 
+function pickWinner(){
+fetch(API_URL,{
+method:"POST",
+body:JSON.stringify({action:"getData"})
+})
+.then(res=>res.json())
+.then(rows=>{
+let pool=[];
+for(let i=1;i<rows.length;i++){
+for(let j=0;j<rows[i][6];j++){
+pool.push(rows[i]);
+}
+}
+let random=pool[Math.floor(Math.random()*pool.length)];
+document.getElementById("winner").innerHTML=
+"🏆 "+random[0]+"<br>Office: "+random[2]+"<br>Entries: "+random[6];
+});
+}
 </script>
 
 </body>
-  </html>
+</html>
