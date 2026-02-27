@@ -240,13 +240,14 @@ return;
 
 fetch(API_URL,{
 method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({
+body:new URLSearchParams({
 action:"register",
 name:name,
 mobile:mobile,
 officeName:office,
 officeAddress:address
+})
+})
 })
 })
 .then(res=>res.text())
@@ -262,8 +263,7 @@ function login(){
 
 fetch(API_URL,{
 method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({
+body:JSON.stringify({...})
 action:"adminLogin",
 password:document.getElementById("adminPass").value
 })
