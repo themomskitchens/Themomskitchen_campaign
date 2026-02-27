@@ -1,86 +1,208 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Food Corner Corporate Lucky Draw</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corporate Lucky Draw</title>
+
 <style>
-body{font-family:'Segoe UI';background:linear-gradient(135deg,#ff7a00,#ffb347);margin:0;padding:20px}
-.container{max-width:500px;margin:auto;background:#fff;padding:25px;border-radius:15px;box-shadow:0 15px 35px rgba(0,0,0,.2)}
-h2{text-align:center;color:#ff6600}
-input,button{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ddd}
-button{background:#ff6600;color:#fff;font-weight:bold;border:none;cursor:pointer}
-button:hover{background:#e05500}
-.hidden{display:none}
-.terms-box{margin-top:20px;padding:18px;background:linear-gradient(135deg,#fff7e6,#ffe0b3);border-left:5px solid #ff6600;border-radius:10px}
-.highlight{color:#d84315;font-weight:bold}
-.footer-note{font-size:11px;text-align:center;margin-top:10px;color:#777}
-#winner{margin-top:10px;font-weight:bold}
+
+body{
+font-family:Arial, sans-serif;
+margin:0;
+background:#FECD50;
+padding:20px;
+}
+
+.container{
+max-width:500px;
+margin:auto;
+background:#fff;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+h2{
+text-align:center;
+margin-top:0;
+}
+
+input,button{
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:8px;
+border:1px solid #ccc;
+font-size:15px;
+}
+
+button{
+background:#FECD50;
+border:none;
+font-weight:bold;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{opacity:0.9;}
+
+.hidden{display:none;}
+
+.terms-box{
+margin-top:15px;
+padding:10px;
+background:#fff8d6;
+border-left:6px solid #FECD50;
+border-radius:10px;
+font-size:15px;
+line-height:1.6;
+}
+
+.terms-box ul{
+padding-left:20px;
+margin:0;
+}
+
+.terms-box li{
+margin-bottom:15px;
+}
+
+.highlight{
+color:#FF0000;
+font-weight:bold;
+}
+
+.footer-note{
+margin-top:15px;
+font-size:13px;
+text-align:center;
+color:#11;
+font-weight:bold;
+}
+
+.checkbox-row{
+margin-top:20px;
+display:flex;
+align-items:center;
+gap:10px;
+font-size:15px;
+}
+
+#winner{
+margin-top:15px;
+font-weight:bold;
+padding:12px;
+background:#f4f4f4;
+border-radius:8px;
+font-size:15px;
+}
 </style>
+
 </head>
 
 <body>
+
 <div class="container">
 
-<div id="customerSection">
-<h2>🏆 Corporate Lucky Draw</h2>
+<!-- TERMS PAGE -->
+<div id="termsPage">
 
-<input type="text" id="name" placeholder="Full Name" required>
-<input type="text" id="mobile" placeholder="Mobile Number" required>
+<h2>📜 Campaign T & C</h2>
+
+<div class="terms-box">
+
+<ul>
+<li>Each <span class="highlight">verified registration</span> gets <b>1 Entry</b>.</li>
+
+<li>Every <span class="highlight">₹100 spent</span> earns <b>1 Additional Entry</b>.</li>
+
+<li>Every <span class="highlight">5 successful orders</span> gives <b>5 Bonus Entries</b>.</li>
+
+<li>Winner will be decided based on <b>highest total entries</b>.</li>
+
+<li>In case of tie, customer with <b>higher billing amount</b> wins.</li>
+
+<li>Management decision will be <b>final & binding</b>.</li>
+
+<li>This campaign is valid for <b>corporate employees only</b>.</li>
+</ul>
+
+<div class="footer-note">
+
+Powered by KAVISH INFORMATICS
+
+</div>
+</div>
+
+<div class="checkbox-row">
+<input type="checkbox" id="agreeCheck">
+<label for="agreeCheck">I agree to the Terms & Conditions</label>
+</div>
+
+<button onclick="proceedToRegister()">Continue</button>
+</div>
+
+<!-- CUSTOMER REGISTRATION -->
+<div id="customerPage" class="hidden">
+<h2>🏆 Register Now</h2>
+
+<input type="text" id="name" placeholder="Full Name">
+<input type="text" id="mobile" placeholder="Mobile Number">
 <input type="text" id="officeName" placeholder="Office Name">
 <input type="text" id="officeAddress" placeholder="Office Address">
 
-<button onclick="register()">Register Now</button>
-
-<div class="terms-box">
-<h3>📜 Official Campaign Terms & Conditions</h3>
-<ul>
-<li>Each <span class="highlight">verified registration</span> gets <b>1 Entry</b>.</li>
-<li>Every <span class="highlight">₹100 spent</span> earns <b>1 Additional Entry</b>.</li>
-<li>Every <span class="highlight">5 successful orders</span> gives <b>5 Bonus Entries</b>.</li>
-<li>Winner = <b>Highest Total Orders</b> during campaign period.</li>
-<li>In case of tie, higher billing amount wins.</li>
-<li>Management decision will be final.</li>
-<li>Corporate employees only.</li>
-</ul>
-<div class="footer-note">Powered by ROYAL TOMAR</div>
-</div>
+<button onclick="register()">Submit Registration</button>
 </div>
 
-<div id="adminLogin" class="hidden">
+<!-- ADMIN LOGIN -->
+<div id="adminLoginPage" class="hidden">
 <h2>🔐 Admin Login</h2>
 <input type="password" id="adminPass" placeholder="Enter Password">
 <button onclick="login()">Login</button>
 </div>
 
-<div id="adminPanel" class="hidden">
-<h2>⚙ Admin Panel</h2>
+<!-- ADMIN DASHBOARD -->
+<div id="adminDashboard" class="hidden">
+<h2>📊 Admin Dashboard</h2>
+
 <input type="text" id="orderMobile" placeholder="Customer Mobile">
 <input type="number" id="orderAmount" placeholder="Order Amount">
-<button onclick="addOrder()">Add Order</button>
+<button onclick="addOrder()">Update Order</button>
+
 <hr>
-<button onclick="pickWinner()">🎉 Pick Winner</button>
-<p id="winner"></p>
+
+<button onclick="pickWinner()">Pick Winner</button>
+<div id="winner"></div>
 </div>
 
 </div>
 
 <script>
 
-const API_URL = "https://script.google.com/macros/s/AKfycbwEnn20IbKD-ImSql5XZMhnFvKv1aTPgaUekPW1Fdh4DO29DjK9BZaBg_0fqlxtfiwa/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbyLlT57YO3kWZkm9cYGxoHPui1BNvn5XOcN6ee1n7TWpGCbtALVf4JY8_Onjudhjao/exec";
 
 if(window.location.search.includes("admin=1")){
-document.getElementById("customerSection").style.display="none";
-document.getElementById("adminLogin").classList.remove("hidden");
+document.getElementById("termsPage").classList.add("hidden");
+document.getElementById("adminLoginPage").classList.remove("hidden");
+}
+
+function proceedToRegister(){
+if(!document.getElementById("agreeCheck").checked){
+alert("Please accept terms to continue");
+return;
+}
+document.getElementById("termsPage").classList.add("hidden");
+document.getElementById("customerPage").classList.remove("hidden");
 }
 
 function register(){
 
-let nameVal = document.getElementById("name").value.trim();
-let mobileVal = document.getElementById("mobile").value.trim();
-let officeVal = document.getElementById("officeName").value.trim();
-let addressVal = document.getElementById("officeAddress").value.trim();
+let name=document.getElementById("name").value.trim();
+let mobile=document.getElementById("mobile").value.trim();
+let office=document.getElementById("officeName").value.trim();
+let address=document.getElementById("officeAddress").value.trim();
 
-if(nameVal === "" || mobileVal === ""){
+if(name==="" || mobile===""){
 alert("Please fill required fields");
 return;
 }
@@ -90,15 +212,18 @@ method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
 action:"register",
-name:nameVal,
-mobile:mobileVal,
-officeName:officeVal,
-officeAddress:addressVal
+name:name,
+mobile:mobile,
+officeName:office,
+officeAddress:address
 })
 })
 .then(res=>res.text())
-.then(data=>alert(data))
-.catch(err=>alert("Network Error"));
+.then(()=>{
+alert("Registration Successful");
+document.getElementById("customerPage").innerHTML="<h2>✅ Thank You for Registering!</h2>";
+})
+.catch(()=>alert("Network Error"));
 }
 
 function login(){
@@ -113,8 +238,8 @@ password:document.getElementById("adminPass").value
 .then(res=>res.text())
 .then(data=>{
 if(data==="Success"){
-document.getElementById("adminLogin").style.display="none";
-document.getElementById("adminPanel").classList.remove("hidden");
+document.getElementById("adminLoginPage").classList.add("hidden");
+document.getElementById("adminDashboard").classList.remove("hidden");
 }else{
 alert("Wrong Password");
 }
@@ -122,11 +247,10 @@ alert("Wrong Password");
 }
 
 function addOrder(){
+let mobile=document.getElementById("orderMobile").value.trim();
+let amount=document.getElementById("orderAmount").value;
 
-let mobileVal=document.getElementById("orderMobile").value.trim();
-let amountVal=document.getElementById("orderAmount").value;
-
-if(mobileVal==="" || amountVal===""){
+if(mobile==="" || amount===""){
 alert("Enter details");
 return;
 }
@@ -136,8 +260,8 @@ method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
 action:"addOrder",
-mobile:mobileVal,
-amount:Number(amountVal)
+mobile:mobile,
+amount:Number(amount)
 })
 })
 .then(res=>res.text())
@@ -152,24 +276,28 @@ body:JSON.stringify({action:"getData"})
 })
 .then(res=>res.json())
 .then(rows=>{
+
 let win=null;
 
 for(let i=1;i<rows.length;i++){
-if(!win || rows[i][6] > win[6] || 
-(rows[i][6]==win[6] && rows[i][5]>win[5])){
+if(!win || rows[i][7] > win[7]){
 win=rows[i];
 }
 }
 
-if(!win){ alert("No Data Found"); return; }
+if(!win){
+alert("No Data Available");
+return;
+}
 
 document.getElementById("winner").innerHTML=
-"🏆 "+win[1]+"<br>Office: "+win[3]+
-"<br>Total Orders: "+win[6]+
-"<br>Total Amount: ₹"+win[5];
+"🏆 Winner: "+win[1]+
+"<br>Mobile: "+win[2]+
+"<br>Total Entries: "+win[7];
 });
 }
 
 </script>
+
 </body>
 </html>
