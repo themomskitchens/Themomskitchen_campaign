@@ -3,37 +3,103 @@
 <head>
 <title>Food Corner Corporate Lucky Draw</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-body{font-family:Arial;background:#f4f4f4;padding:20px;}
-.container{max-width:500px;margin:auto;background:white;padding:20px;border-radius:10px;box-shadow:0 0 10px #ccc;}
-input,select,button{width:100%;padding:10px;margin:8px 0;}
-button{background:#ff6600;color:white;border:none;cursor:pointer;}
-button:hover{background:#e65c00;}
+body{
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#ff7a00,#ffb347);
+margin:0;
+padding:20px;
+}
+.container{
+max-width:500px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 15px 35px rgba(0,0,0,0.2);
+}
+h2{
+text-align:center;
+color:#ff6600;
+}
+input,button{
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:8px;
+border:1px solid #ddd;
+font-size:14px;
+}
+button{
+background:#ff6600;
+color:white;
+font-weight:bold;
+border:none;
+cursor:pointer;
+transition:0.3s;
+}
+button:hover{
+background:#e05500;
+transform:scale(1.03);
+}
 .hidden{display:none;}
-h2{text-align:center;}
+
+.terms-box{
+margin-top:20px;
+padding:18px;
+background:linear-gradient(135deg,#fff7e6,#ffe0b3);
+border-left:5px solid #ff6600;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+.terms-box h3{
+margin-top:0;
+color:#ff6600;
+}
+.terms-box ul{
+padding-left:18px;
+margin:10px 0;
+}
+.terms-box li{
+margin-bottom:8px;
+font-size:13px;
+}
+.highlight{
+color:#d84315;
+font-weight:bold;
+}
 </style>
 </head>
+
 <body>
 
 <div class="container">
 
 <!-- CUSTOMER SECTION -->
 <div id="customerSection">
-<h2>🏆 Lucky Draw Registration</h2>
+<h2>🏆 Corporate Lucky Draw</h2>
 
 <input type="text" id="name" placeholder="Full Name">
 <input type="text" id="mobile" placeholder="Mobile Number">
-<input type="text" id="office" placeholder="Office / Building">
+<input type="text" id="officeName" placeholder="Office Name">
+<input type="text" id="officeAddress" placeholder="Office Address">
 
-<select id="preference">
-<option value="">Veg / Non-Veg</option>
-<option>Veg</option>
-<option>Non-Veg</option>
-</select>
+<button onclick="register()">Register Now</button>
 
-<button onclick="register()">Register</button>
+<div class="terms-box">
+<h3>📜 Campaign Rules</h3>
+<ul>
+<li>Each successful registration gives <b>1 Entry</b>.</li>
+<li>Every <span class="highlight">₹100 spent</span> gives <b>1 Extra Entry</b>.</li>
+<li>After completing <span class="highlight">5 confirmed orders</span>, customer gets <b>5 Bonus Entries</b>.</li>
+<li><b>Winner will be the customer with the highest confirmed orders</b> during the campaign period.</li>
+<li>If two customers have equal orders, the one with <b>higher total purchase amount</b> will win.</li>
+<li>All decisions by <b>Food Corner Management</b> are final.</li>
+</ul>
 </div>
 
+</div>
 
 <!-- ADMIN LOGIN -->
 <div id="adminLogin" class="hidden">
@@ -42,84 +108,56 @@ h2{text-align:center;}
 <button onclick="login()">Login</button>
 </div>
 
-
 <!-- ADMIN PANEL -->
 <div id="adminPanel" class="hidden">
 <h2>⚙ Admin Panel</h2>
 
-<h3>Add Order</h3>
 <input type="text" id="orderMobile" placeholder="Customer Mobile">
 <input type="number" id="orderAmount" placeholder="Order Amount">
 <button onclick="addOrder()">Add Order</button>
 
 <hr>
 
-<h3>Pick Winner</h3>
-<button onclick="pickWinner()">Generate Winner</button>
-<p id="winnerResult"></p>
+<button onclick="pickWinner()">🏆 Show Winner</button>
+<p id="winner"></p>
+
 </div>
 
 </div>
 
 <script>
 
-const API_URL = "https://script.google.com/macros/s/AKfycbxMhg19u7Dcfe905zZ2IJ1rKTQlFXnibrrGd0XBmuhftKlv7V0uX6-RC9jphKXII7Sd/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbxg90H8npJwAiyVXkQRLp5E997N7IF6pjYyV3M1iWFLqpPdRsHiDQuSR7m1t2r9vTHk/exec";
 
-// Admin mode detect
-if (window.location.search.includes("admin=1")) {
+if(window.location.search.includes("admin=1")){
 document.getElementById("customerSection").style.display="none";
 document.getElementById("adminLogin").classList.remove("hidden");
 }
 
-// REGISTER
 function register(){
-
-let name=document.getElementById("name").value;
-let mobile=document.getElementById("mobile").value;
-let office=document.getElementById("office").value;
-let preference=document.getElementById("preference").value;
-
-if(!name||!mobile||!office||!preference){
-alert("Please fill all fields");
-return;
-}
-
 fetch(API_URL,{
 method:"POST",
-mode:"cors",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
 action:"register",
-name:name,
-mobile:mobile,
-office:office,
-preference:preference
+name:document.getElementById("name").value,
+mobile:document.getElementById("mobile").value,
+officeName:document.getElementById("officeName").value,
+officeAddress:document.getElementById("officeAddress").value
 })
 })
 .then(res=>res.text())
-.then(data=>{
-alert(data);
-document.getElementById("name").value="";
-document.getElementById("mobile").value="";
-document.getElementById("office").value="";
-document.getElementById("preference").value="";
-})
+.then(data=>alert(data))
 .catch(err=>alert("Error: "+err));
-
 }
 
-
-// ADMIN LOGIN
 function login(){
-let pass=document.getElementById("adminPass").value;
-
 fetch(API_URL,{
 method:"POST",
-mode:"cors",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
 action:"adminLogin",
-password:pass
+password:document.getElementById("adminPass").value
 })
 })
 .then(res=>res.text())
@@ -133,66 +171,47 @@ alert("Wrong Password");
 });
 }
 
-
-// ADD ORDER
 function addOrder(){
-let mobile=document.getElementById("orderMobile").value;
-let amount=parseInt(document.getElementById("orderAmount").value);
-
-if(!mobile||!amount){
-alert("Enter mobile & amount");
-return;
-}
-
 fetch(API_URL,{
 method:"POST",
-mode:"cors",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
 action:"addOrder",
-mobile:mobile,
-amount:amount
+mobile:document.getElementById("orderMobile").value,
+amount:parseInt(document.getElementById("orderAmount").value)
 })
 })
 .then(res=>res.text())
 .then(data=>alert(data));
 }
 
-
-// PICK WINNER
 function pickWinner(){
-
 fetch(API_URL,{
 method:"POST",
-mode:"cors",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({action:"getData"})
 })
 .then(res=>res.json())
 .then(rows=>{
-
-let pool=[];
+let winner=null;
 
 for(let i=1;i<rows.length;i++){
-let entries=parseInt(rows[i][6]);
-for(let j=0;j<entries;j++){
-pool.push(rows[i]);
+if(!winner || rows[i][6] > winner[6] || 
+   (rows[i][6] == winner[6] && rows[i][5] > winner[5])){
+winner = rows[i];
 }
 }
 
-if(pool.length===0){
-alert("No Entries Found");
+if(!winner){
+alert("No Data Found");
 return;
 }
 
-let random=pool[Math.floor(Math.random()*pool.length)];
-
-document.getElementById("winnerResult").innerHTML=
-"🏆 Winner: "+random[0]+"<br>Office: "+random[2]+"<br>Total Entries: "+random[6];
-
-})
-.catch(err=>alert("Error: "+err));
-
+document.getElementById("winner").innerHTML =
+"🏆 <b>"+winner[1]+"</b><br>Office: "+winner[3]+
+"<br>Total Orders: "+winner[6]+
+"<br>Total Amount: ₹"+winner[5];
+});
 }
 
 </script>
