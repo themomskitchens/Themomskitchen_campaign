@@ -113,16 +113,28 @@ color:#777;
 <button onclick="register()">Register Now</button>
 
 <div class="terms-box">
-<h3>📜 Campaign Terms & Conditions</h3>
+<h3>📜 Official Campaign Terms & Conditions</h3>
+
 <ul>
-<li>Each <span class="highlight">successful registration</span> grants <b>1 Entry</b>.</li>
-<li>For every <span class="highlight">₹100 spent</span>, you earn <b>1 Additional Entry</b>.</li>
-<li>After completing <span class="highlight">5 confirmed orders</span>, you receive <b>5 Bonus Entries</b>.</li>
-<li>Winner will be selected using a <span class="highlight">highest orders during the campaign period.</span>.</li>
-<li>All campaign decisions by <b>Food Corner Management</b> will be final and binding.</li>
+<li>Each <span class="highlight">verified registration</span> will receive <b>1 Base Entry</b> into the Corporate Lucky Draw.</li>
+
+<li>For every <span class="highlight">₹100 of confirmed billing</span>, participants earn <b>1 Additional Entry</b>. (Entries are calculated automatically.)</li>
+
+<li>Upon completion of <span class="highlight">every 5 successful orders</span>, the participant will receive <b>5 Bonus Entries</b> as a performance reward.</li>
+
+<li>The <span class="highlight">Winner will be declared based on the highest total confirmed orders</span> during the campaign period.</li>
+
+<li>In case of a tie, the participant with the <b>higher total billing amount</b> will be ranked higher.</li>
+
+<li>Only <b>corporate complex employees</b> are eligible to participate.</li>
+
+<li>Any misuse, duplicate registrations, or suspicious activity may lead to disqualification.</li>
+
+<li>The final decision rests solely with <b>Food Corner Management</b> and will be considered final and binding.</li>
 </ul>
+
 <div class="footer-note">
-Campaign valid for corporate employees only.
+📅 Campaign valid for limited period only. Entries close at month-end.
 </div>
 </div>
 
@@ -152,7 +164,7 @@ Campaign valid for corporate employees only.
 
 <script>
 
-const API_URL="https://script.google.com/macros/s/AKfycbxhJX5Jb0h_bv-3SSGKPwYopECaHXo8o2klnfwbN0QliAOvsyhxf7LAooE90MpgydY5/exec";
+const API_UR = "https://script.google.com/macros/s/AKfycbwEnn20IbKD-ImSql5XZMhnFvKv1aTPgaUekPW1Fdh4DO29DjK9BZaBg_0fqlxtfiwa/exec";
 
 if(window.location.search.includes("admin=1")){
 document.getElementById("customerSection").style.display="none";
