@@ -118,7 +118,7 @@ color:#777;
 <li>Each <span class="highlight">successful registration</span> grants <b>1 Entry</b>.</li>
 <li>For every <span class="highlight">₹100 spent</span>, you earn <b>1 Additional Entry</b>.</li>
 <li>After completing <span class="highlight">5 confirmed orders</span>, you receive <b>5 Bonus Entries</b>.</li>
-<li>Winner will be selected using a <span class="highlight">fair random digital selection system</span>.</li>
+<li>Winner will be the customer with the <span class="highlight">confirmed orders during the campaign period.</span>.</li>
 <li>All campaign decisions by <b>Food Corner Management</b> will be final and binding.</li>
 </ul>
 <div class="footer-note">
@@ -218,19 +218,24 @@ body:JSON.stringify({action:"getData"})
 })
 .then(res=>res.json())
 .then(rows=>{
-let pool=[];
+let winner=null;
+
 for(let i=1;i<rows.length;i++){
-for(let j=0;j<rows[i][7];j++){
-pool.push(rows[i]);
+if(!winner || rows[i][6] > winner[6] || 
+   (rows[i][6] == winner[6] && rows[i][5] > winner[5])){
+winner = rows[i];
 }
 }
-if(pool.length===0){
-alert("No Entries Found");
+
+if(!winner){
+alert("No Data Found");
 return;
 }
-let random=pool[Math.floor(Math.random()*pool.length)];
-document.getElementById("winner").innerHTML=
-"🏆 <b>"+random[1]+"</b><br>Office: "+random[3]+"<br>Total Entries: "+random[7];
+
+document.getElementById("winner").innerHTML =
+"🏆 <b>"+winner[1]+"</b><br>Office: "+winner[3]+
+"<br>Total Orders: "+winner[6]+
+"<br>Total Amount: ₹"+winner[5];
 });
 }
 </script>
