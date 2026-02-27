@@ -3,110 +3,29 @@
 <head>
 <title>Food Corner Corporate Lucky Draw</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-body{
-font-family: 'Segoe UI', sans-serif;
-background: linear-gradient(135deg,#ff7a00,#ffb347);
-margin:0;
-padding:20px;
-}
-
-.container{
-max-width:500px;
-margin:auto;
-background:white;
-padding:25px;
-border-radius:15px;
-box-shadow:0 15px 35px rgba(0,0,0,0.2);
-}
-
-h2{
-text-align:center;
-margin-bottom:20px;
-color:#ff6600;
-}
-
-input,button{
-width:100%;
-padding:12px;
-margin:8px 0;
-border-radius:8px;
-border:1px solid #ddd;
-font-size:14px;
-}
-
-button{
-background:#ff6600;
-color:white;
-font-weight:bold;
-border:none;
-cursor:pointer;
-transition:0.3s;
-}
-
-button:hover{
-background:#e05500;
-transform:scale(1.03);
-}
-
-.hidden{
-display:none;
-}
-
-.terms-box{
-margin-top:20px;
-padding:18px;
-background:linear-gradient(135deg,#fff7e6,#ffe0b3);
-border-left:5px solid #ff6600;
-border-radius:10px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-animation:fadeIn 1s ease-in-out;
-}
-
-.terms-box h3{
-margin-top:0;
-color:#ff6600;
-}
-
-.terms-box ul{
-padding-left:18px;
-margin:10px 0;
-}
-
-.terms-box li{
-margin-bottom:8px;
-font-size:13px;
-}
-
-.highlight{
-color:#d84315;
-font-weight:bold;
-}
-
-@keyframes fadeIn{
-from{opacity:0; transform:translateY(10px);}
-to{opacity:1; transform:translateY(0);}
-}
-
-.footer-note{
-font-size:11px;
-text-align:center;
-margin-top:10px;
-color:#777;
-}
+body{font-family:'Segoe UI';background:linear-gradient(135deg,#ff7a00,#ffb347);margin:0;padding:20px}
+.container{max-width:500px;margin:auto;background:#fff;padding:25px;border-radius:15px;box-shadow:0 15px 35px rgba(0,0,0,.2)}
+h2{text-align:center;color:#ff6600}
+input,button{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ddd}
+button{background:#ff6600;color:#fff;font-weight:bold;border:none;cursor:pointer}
+button:hover{background:#e05500}
+.hidden{display:none}
+.terms-box{margin-top:20px;padding:18px;background:linear-gradient(135deg,#fff7e6,#ffe0b3);border-left:5px solid #ff6600;border-radius:10px}
+.highlight{color:#d84315;font-weight:bold}
+.footer-note{font-size:11px;text-align:center;margin-top:10px;color:#777}
+#winner{margin-top:10px;font-weight:bold}
 </style>
 </head>
 
 <body>
-
 <div class="container">
 
 <div id="customerSection">
 <h2>🏆 Corporate Lucky Draw</h2>
 
-<input type="text" id="name" placeholder="Full Name">
-<input type="text" id="mobile" placeholder="Mobile Number">
+<input type="text" id="name" placeholder="Full Name" required>
+<input type="text" id="mobile" placeholder="Mobile Number" required>
 <input type="text" id="officeName" placeholder="Office Name">
 <input type="text" id="officeAddress" placeholder="Office Address">
 
@@ -137,9 +56,6 @@ color:#777;
 📅 Campaign valid for limited period only. Entries close at month-end.
 </div>
 </div>
-
-</div>
-
 <div id="adminLogin" class="hidden">
 <h2>🔐 Admin Login</h2>
 <input type="password" id="adminPass" placeholder="Enter Password">
@@ -148,23 +64,19 @@ color:#777;
 
 <div id="adminPanel" class="hidden">
 <h2>⚙ Admin Panel</h2>
-
 <input type="text" id="orderMobile" placeholder="Customer Mobile">
 <input type="number" id="orderAmount" placeholder="Order Amount">
 <button onclick="addOrder()">Add Order</button>
-
 <hr>
-
 <button onclick="pickWinner()">🎉 Pick Winner</button>
 <p id="winner"></p>
-
 </div>
 
 </div>
 
 <script>
 
-const API_UR = "https://script.google.com/macros/s/AKfycbwEnn20IbKD-ImSql5XZMhnFvKv1aTPgaUekPW1Fdh4DO29DjK9BZaBg_0fqlxtfiwa/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwEnn20IbKD-ImSql5XZMhnFvKv1aTPgaUekPW1Fdh4DO29DjK9BZaBg_0fqlxtfiwa/exec";
 
 if(window.location.search.includes("admin=1")){
 document.getElementById("customerSection").style.display="none";
@@ -173,7 +85,12 @@ document.getElementById("adminLogin").classList.remove("hidden");
 
 function register(){
 
-if(!name.value || !mobile.value){
+let nameVal = document.getElementById("name").value.trim();
+let mobileVal = document.getElementById("mobile").value.trim();
+let officeVal = document.getElementById("officeName").value.trim();
+let addressVal = document.getElementById("officeAddress").value.trim();
+
+if(nameVal === "" || mobileVal === ""){
 alert("Please fill required fields");
 return;
 }
@@ -183,22 +100,15 @@ method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
 action:"register",
-name:name.value,
-mobile:mobile.value,
-officeName:officeName.value,
-officeAddress:officeAddress.value
+name:nameVal,
+mobile:mobileVal,
+officeName:officeVal,
+officeAddress:addressVal
 })
 })
 .then(res=>res.text())
-.then(data=>{
-console.log(data);
-alert(data);
-})
-.catch(err=>{
-console.log(err);
-alert("Network Error");
-});
-
+.then(data=>alert(data))
+.catch(err=>alert("Network Error"));
 }
 
 function login(){
@@ -222,13 +132,22 @@ alert("Wrong Password");
 }
 
 function addOrder(){
+
+let mobileVal=document.getElementById("orderMobile").value.trim();
+let amountVal=document.getElementById("orderAmount").value;
+
+if(mobileVal==="" || amountVal===""){
+alert("Enter details");
+return;
+}
+
 fetch(API_URL,{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
 action:"addOrder",
-mobile:document.getElementById("orderMobile").value,
-amount:parseInt(document.getElementById("orderAmount").value)
+mobile:mobileVal,
+amount:Number(amountVal)
 })
 })
 .then(res=>res.text())
@@ -243,27 +162,24 @@ body:JSON.stringify({action:"getData"})
 })
 .then(res=>res.json())
 .then(rows=>{
-let winner=null;
+let win=null;
 
 for(let i=1;i<rows.length;i++){
-if(!winner || rows[i][6] > winner[6] || 
-   (rows[i][6] == winner[6] && rows[i][5] > winner[5])){
-winner = rows[i];
+if(!win || rows[i][6] > win[6] || 
+(rows[i][6]==win[6] && rows[i][5]>win[5])){
+win=rows[i];
 }
 }
 
-if(!winner){
-alert("No Data Found");
-return;
-}
+if(!win){ alert("No Data Found"); return; }
 
-document.getElementById("winner").innerHTML =
-"🏆 <b>"+winner[1]+"</b><br>Office: "+winner[3]+
-"<br>Total Orders: "+winner[6]+
-"<br>Total Amount: ₹"+winner[5];
+document.getElementById("winner").innerHTML=
+"🏆 "+win[1]+"<br>Office: "+win[3]+
+"<br>Total Orders: "+win[6]+
+"<br>Total Amount: ₹"+win[5];
 });
 }
-</script>
 
+</script>
 </body>
 </html>
